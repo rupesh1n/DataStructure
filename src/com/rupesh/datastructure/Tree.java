@@ -1,5 +1,9 @@
 package com.rupesh.datastructure;
 
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Stack;
+
 public class Tree<E> implements ITree<E> {
 	
 	@SuppressWarnings("hiding")
@@ -125,5 +129,143 @@ public class Tree<E> implements ITree<E> {
 	public int size() {
 		return currentSize;
 	}
-   
+
+	@Override
+	public Iterator<E> traverse(TreeTraversalOrder order) {
+		switch (order) {
+	      case PRE_ORDER: return preOrderTraversal();
+	      case IN_ORDER: return inOrderTraversal();
+	      case POST_ORDER: return postOrderTraversal();
+	      case LEVEL_ORDER: return levelOrderTraversal();
+	      default: return null;
+	    }
+	}
+
+	private Iterator<E> preOrderTraversal() {
+		final int expectedNodeCount = currentSize;
+		Stack<Node<E>> stack = new Stack<Node<E>>();
+		stack.push(root);
+		return new Iterator<E>() {
+
+					@Override
+					public boolean hasNext() {
+						if(expectedNodeCount != currentSize)
+							throw new ConcurrentModificationException();
+						return root != null && !stack.isEmpty();
+					}
+
+					@Override
+					public E next() {
+						if(expectedNodeCount != currentSize)
+							throw new ConcurrentModificationException();
+						Node<E> node = stack.pop();
+						if(node.right != null)
+							stack.push(node.right);
+						if(node.left != null)
+							stack.push(node.left);
+						return node.data;
+					}
+					@Override public void remove() {
+				        throw new UnsupportedOperationException();
+				      }
+		};
+	}
+
+	private Iterator<E> inOrderTraversal() {
+		final int expectedNodeCount = currentSize;
+		Stack<Node<E>> stack = new Stack<Node<E>>();
+		stack.push(root);
+		return new Iterator<E>() {
+			Node<E> trav = root;
+			@Override
+			public boolean hasNext() {
+				if(expectedNodeCount != currentSize)
+					throw new ConcurrentModificationException();
+				return root != null && !stack.isEmpty();
+			}
+
+			@Override
+			public E next() {
+				if(expectedNodeCount != currentSize)
+					throw new ConcurrentModificationException();
+				// Dig left
+		        while(trav != null && trav.left != null) {
+		          stack.push(trav.left);
+		          trav = trav.left;
+		        }
+				
+				Node<E> node = stack.pop();
+				
+				// Try moving down right once
+		        if (node.right != null) {
+		          stack.push(node.right);
+		          trav = node.right;
+		        }
+		        
+				return node.data;
+			}
+			@Override public void remove() {
+		        throw new UnsupportedOperationException();
+		      }
+	
+		};
+	}
+
+	private Iterator<E> postOrderTraversal() {
+		final int expectedNodeCount = currentSize;
+		Stack<Node<E>> stack1 = new Stack<Node<E>>();
+		Stack<Node<E>> stack2 = new Stack<Node<E>>();
+		stack1.push(root);
+		while(!stack1.empty()) {
+			Node<E> node = stack1.pop();
+			if(node != null) {
+				stack2.push(node);
+				if(node.left != null) stack1.push(node.left);
+				if(node.right != null) stack2.push(node.right);
+			}
+		}
+		return new Iterator<E>() {
+
+			@Override
+			public boolean hasNext() {
+				if(expectedNodeCount != currentSize)
+					throw new ConcurrentModificationException();
+				return root != null && !stack2.isEmpty();
+			}
+
+			@Override
+			public E next() {
+				if(expectedNodeCount != currentSize)
+					throw new ConcurrentModificationException();
+				return stack2.pop().data;
+			}
+			
+			@Override public void remove() {
+		        throw new UnsupportedOperationException();
+		      } 
+			};
+	}
+
+	private Iterator<E> levelOrderTraversal() {
+		final int expectedNodeCount = currentSize;
+	    final java.util.Queue <Node<E>> queue = new java.util.LinkedList<>();
+	    queue.offer(root);
+
+	    return new Iterator <E> () {
+	      @Override public boolean hasNext() {
+	        if (expectedNodeCount != currentSize) throw new ConcurrentModificationException();
+	        return root != null && !queue.isEmpty();
+	      }
+	      @Override public E next () {
+	        if (expectedNodeCount != currentSize) throw new ConcurrentModificationException();
+	        Node<E> node = queue.poll();
+	        if (node.left != null) queue.offer(node.left);
+	        if (node.right != null) queue.offer(node.right);
+	        return node.data;
+	      }
+	      @Override public void remove() {
+	        throw new UnsupportedOperationException();
+	      }      
+	    };
+	}
 }

@@ -1,5 +1,7 @@
 package com.rupesh.datastructure;
 
+import java.util.Iterator;
+
 public interface ITree<E> {
 	void add(E obj);
 	boolean contains(E obj);
@@ -7,4 +9,5 @@ public interface ITree<E> {
 	int height();
 	boolean empty();
 	int size();
+	public Iterator <E> traverse(TreeTraversalOrder order);
 }
