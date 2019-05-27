@@ -1,10 +1,9 @@
 package com.rupesh.datastructure;
 
-import java.util.Iterator;
-
 public class Tester {
 	public static void main(String[] arg) {
-		ITree<Integer> tree = new Tree<>();
+		
+		IAVLTree<Integer> tree = new AVLTree<>();
 		tree.add(10);
 		tree.add(9);
 		tree.add(11);
@@ -19,11 +18,30 @@ public class Tester {
 		System.out.println("Contains 55 : " + tree.contains(55));
 		System.out.println("tree size : " + tree.size());
 		System.out.println("tree height : " + tree.height());
-		Iterator <Integer> iter = tree.traverse(TreeTraversalOrder.LEVEL_ORDER);
-		while(iter.hasNext()) {
-			System.out.println("tree inorder : " +iter);
-		      iter.next();
-		    }
+		//Iterator <Integer> iter = tree.traverse(TreeTraversalOrder.LEVEL_ORDER);
+		System.out.println("tree inorder : ");
+		tree.levelOrder();
+		
+		/*ITree<Integer> tree = new Tree<>();
+		tree.add(10);
+		tree.add(9);
+		tree.add(11);
+		tree.add(7);
+		tree.add(8);
+		tree.add(1);
+		tree.add(4);
+		tree.add(22);
+		tree.add(12);
+		tree.add(17);
+		System.out.println("Contains 8 : " + tree.contains(8));
+		System.out.println("Contains 55 : " + tree.contains(55));
+		System.out.println("tree size : " + tree.size());
+		System.out.println("tree height : " + tree.height());
+		//Iterator <Integer> iter = tree.traverse(TreeTraversalOrder.LEVEL_ORDER);
+		System.out.println("tree inorder : ");
+		tree.inOrder();*/
+		
+
 		
 		/*HashI<String, Integer> hash = new Hash<>(16);
 		hash.add("Rupesh", 10);

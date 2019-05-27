@@ -141,6 +141,18 @@ public class Tree<E> implements ITree<E> {
 	    }
 	}
 
+	public void inOrder() {
+		inOrder(root);
+	}
+	@SuppressWarnings("unused")
+	private void inOrder(Node<E> node) { 
+		if (node == null) { 
+			return; } 
+		inOrder(node.left); 
+		System.out.printf("%s ", node.data); 
+		inOrder(node.right);
+		}
+	
 	private Iterator<E> preOrderTraversal() {
 		final int expectedNodeCount = currentSize;
 		Stack<Node<E>> stack = new Stack<Node<E>>();
@@ -163,6 +175,7 @@ public class Tree<E> implements ITree<E> {
 							stack.push(node.right);
 						if(node.left != null)
 							stack.push(node.left);
+						System.out.print(node.data+" ");
 						return node.data;
 					}
 					@Override public void remove() {

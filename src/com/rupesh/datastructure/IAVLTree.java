@@ -2,13 +2,13 @@ package com.rupesh.datastructure;
 
 import java.util.Iterator;
 
-public interface ITree<E> {
+public interface IAVLTree<E> {
 	void add(E obj);
 	boolean contains(E obj);
-	boolean remove(E obj);
-	int height();
 	boolean empty();
 	int size();
-	public Iterator <E> traverse(TreeTraversalOrder order);
+	int height();
+	public Iterator<E> traverse(TreeTraversalOrder order);
 	void inOrder();
+	void levelOrder();
 }
